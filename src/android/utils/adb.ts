@@ -189,7 +189,7 @@ export async function installApk(
     path.join(sdk.root, 'platform-tools'),
   );
   const adbBin = path.join(platformTools.location, 'adb');
-  const args = ['-s', device.serial, 'install', '-r', '-t', apk];
+  const args = ['-H', 'host.docker.internal','-s', device.serial, 'install', '-r', '-t', apk];
   debug('Invoking adb with args: %O', args);
 
   const p = spawn(adbBin, args, {
