@@ -89,7 +89,7 @@ export async function getDeviceProperty(
   property: string,
 ): Promise<string> {
   const debug = Debug(`${modulePrefix}:${getDeviceProperty.name}`);
-  const args = ['-s', device.serial, 'shell', 'getprop', property];
+  const args = ['-H', 'host.docker.internal','-s', device.serial, 'shell', 'getprop', property];
 
   debug('Invoking adb with args: %O', args);
   const stdout = await execAdb(sdk, args, { timeout: 5000 });
@@ -102,7 +102,7 @@ export async function getDeviceProperties(
   device: Device,
 ): Promise<DeviceProperties> {
   const debug = Debug(`${modulePrefix}:${getDeviceProperties.name}`);
-  const args = ['-s', device.serial, 'shell', 'getprop'];
+  const args = ['-H', 'host.docker.internal','-s', device.serial, 'shell', 'getprop'];
 
   debug('Invoking adb with args: %O', args);
   const stdout = await execAdb(sdk, args, { timeout: 5000 });
@@ -128,7 +128,7 @@ export async function getDeviceProperties(
 
 export async function waitForDevice(sdk: SDK, serial: string): Promise<void> {
   const debug = Debug(`${modulePrefix}:${waitForDevice.name}`);
-  const args = ['-s', serial, 'wait-for-any-device'];
+  const args = ['-H', 'host.docker.internal','-s', serial, 'wait-for-any-device'];
 
   debug('Invoking adb with args: %O', args);
   await execAdb(sdk, args);
@@ -158,7 +158,7 @@ export async function waitForClose(
   app: string,
 ): Promise<void> {
   const debug = Debug(`${modulePrefix}:${waitForClose.name}`);
-  const args = ['-s', device.serial, 'shell', `ps | grep ${app}`];
+  const args = ['-H', 'host.docker.internal','-s', device.serial, 'shell', `ps | grep ${app}`];
 
   return new Promise<void>(resolve => {
     const interval = setInterval(async () => {
@@ -189,7 +189,7 @@ export async function installApk(
     path.join(sdk.root, 'platform-tools'),
   );
   const adbBin = path.join(platformTools.location, 'adb');
-  const args = ['-s', device.serial, 'install', '-r', '-t', apk];
+  const args = ['-H', 'host.docker.internal','-s', device.serial, 'install', '-r', '-t', apk];
   debug('Invoking adb with args: %O', args);
 
   const p = spawn(adbBin, args, {
@@ -274,7 +274,7 @@ export async function closeApp(
   app: string,
 ): Promise<void> {
   const debug = Debug(`${modulePrefix}:${closeApp.name}`);
-  const args = ['-s', device.serial, 'shell', 'am', 'force-stop', app];
+  const args = ['-H', 'host.docker.internal','-s', device.serial, 'shell', 'am', 'force-stop', app];
 
   debug('Invoking adb with args: %O', args);
   await execAdb(sdk, args);
@@ -286,7 +286,7 @@ export async function uninstallApp(
   app: string,
 ): Promise<void> {
   const debug = Debug(`${modulePrefix}:${uninstallApp.name}`);
-  const args = ['-s', device.serial, 'uninstall', app];
+  const args = ['-H', 'host.docker.internal','-s', device.serial, 'uninstall', app];
 
   debug('Invoking adb with args: %O', args);
   await execAdb(sdk, args);
@@ -337,6 +337,7 @@ export async function startActivity(
 ): Promise<void> {
   const debug = Debug(`${modulePrefix}:${startActivity.name}`);
   const args = [
+    '-H', 'host.docker.internal',
     '-s',
     device.serial,
     'shell',
@@ -444,6 +445,7 @@ export async function unforwardPorts(
 ): Promise<void> {
   const debug = Debug(`${modulePrefix}:${unforwardPorts.name}`);
   const args = [
+    '-H', 'host.docker.internal',
     '-s',
     device.serial,
     'reverse',
