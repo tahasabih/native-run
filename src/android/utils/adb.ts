@@ -57,7 +57,7 @@ const ADB_GETPROP_MAP: ReadonlyMap<string, keyof MappedDeviceProps> = new Map<
 
 export async function getDevices(sdk: SDK): Promise<Device[]> {
   const debug = Debug(`${modulePrefix}:${getDevices.name}`);
-  const args = ['-H host.docker.internal','devices', '-l'];
+  const args = ['-H', 'host.docker.internal','devices', '-l'];
 
   debug('Invoking adb with args: %O', args);
   const stdout = await execAdb(sdk, args, { timeout: 5000 });
