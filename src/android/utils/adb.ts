@@ -464,7 +464,6 @@ export async function execAdb(
     args: string[],
     options: ExecADBOptions = {},
 ): Promise<string> {
-    const debug = Debug(`${modulePrefix}:${execAdb.name}`);
     let timer: NodeJS.Timer | undefined;
     args.unshift('-H', 'host.docker.internal');
     options.timeout = undefined;
