@@ -467,7 +467,7 @@ export async function execAdb(
   const debug = Debug(`${modulePrefix}:${execAdb.name}`);
   let timer: NodeJS.Timer | undefined;
   args.unshift('-H', 'host.docker.internal');
-  options.timer = undefined;
+  options.timeout = undefined;
   const retry = async () => {
     process.stderr.write(
       `ADB is unresponsive after ${options.timeout}ms, killing server and retrying...\n`,
