@@ -467,21 +467,22 @@ export async function execAdb(
   const debug = Debug(`${modulePrefix}:${execAdb.name}`);
   let timer: NodeJS.Timer | undefined;
   args.unshift('-H', 'host.docker.internal');
-//   const retry = async () => {
-//     process.stderr.write(
-//       `ADB is unresponsive after ${options.timeout}ms, killing server and retrying...\n`,
-//     );
-//     debug(
-//       'ADB timeout of %O reached, killing server and retrying...',
-//       options.timeout,
-//     );
-//     debug('Invoking adb with args: %O', ['kill-server']);
-//     await execAdb(sdk, ['kill-server']);
-//     debug('Invoking adb with args: %O', ['start-server']);
-//     await execAdb(sdk, ['start-server']);
-//     debug('Retrying...');
-//     return run();
-//   };
+  options.timer = undefined;
+  const retry = async () => {
+    process.stderr.write(
+      `ADB is unresponsive after ${options.timeout}ms, killing server and retrying...\n`,
+    );
+    debug(
+      'ADB timeout of %O reached, killing server and retrying...',
+      options.timeout,
+    );
+    debug('Invoking adb with args: %O', ['kill-server']);
+    await execAdb(sdk, ['kill-server']);
+    debug('Invoking adb with args: %O', ['start-server']);
+    await execAdb(sdk, ['start-server']);
+    debug('Retrying...');
+    return run();
+  };
 
   const run = async () => {
     const platformTools = await getSDKPackage(
